@@ -41,7 +41,7 @@ npm run build
 npm run start
 ```
 
-## `Timestamps` for your convenience:
+<! --## `Timestamps` for your convenience:
 
 -   00:00:00 - App Showcase
 -   00:07:50 - Backend Setup
@@ -68,4 +68,4 @@ npm run start
 -   06:24:40 - Detailed Deployment Guide
 -   06:48:53 - Oops! I almost forgot this... bye
 
-### I'll see you in the next one! 🚀
+### I'll see you in the next one! 🚀 -->
