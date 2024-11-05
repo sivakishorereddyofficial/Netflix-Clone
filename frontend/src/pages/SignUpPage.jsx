@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/authUser";
 
 //vyshnavi
-
 import React from 'react'
 
 const SignUpPage = () => {
