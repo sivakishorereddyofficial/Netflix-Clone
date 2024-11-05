@@ -2,6 +2,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/authUser";
 
+//vyshnavi
+
+import React from 'react'
+
+const SignUpPage = () => {
+  return (
+    <div className='hero-bg h-screen w-full'>SignUpPage</div>
+  )
+}
+
+export default SignUpPage
+
 const SignUpPage = () => {
 	const { searchParams } = new URL(document.location);
 	const emailValue = searchParams.get("email");

@@ -8,3 +8,10 @@ const HomePage = () => {
 	return <>{user ? <HomeScreen /> : <AuthScreen />}</>;
 };
 export default HomePage;
+
+
+// Vyshnavi
+const HomePage = () => {
+	return <div className='hero-bg h-screen w-full'>HomePage</div>;
+  }
+  export default HomePage;
