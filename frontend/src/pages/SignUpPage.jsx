@@ -2,14 +2,13 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/authUser";
 
-//vyshnavi
+//vyshnavi imported react
 import React from 'react'
 
 const SignUpPage = () => {
   return (
     <div className='hero-bg h-screen w-full'>SignUpPage</div>
   )
-}
 
 export default SignUpPage
 
