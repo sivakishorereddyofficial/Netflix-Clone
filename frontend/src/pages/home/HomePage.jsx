@@ -9,8 +9,7 @@ const HomePage = () => {
 };
 export default HomePage;
 
-
-// Vyshnavi
+// Vyshnavi JSX is used to return
 const HomePage = () => {
 	return <div className='hero-bg h-screen w-full'>HomePage</div>;
   }
