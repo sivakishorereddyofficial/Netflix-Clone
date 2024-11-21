@@ -1,38 +1,42 @@
 import express from "express";
-import cookieParser from "cookie-parser";
-import path from "path";
+import cookies from "cookie-parser";
+import { resolve, join } from "path";
 
-import authRoutes from "./routes/auth.route.js";
-import movieRoutes from "./routes/movie.route.js";
-import tvRoutes from "./routes/tv.route.js";
-import searchRoutes from "./routes/search.route.js";
+import authRouter from "./routes/auth.route.js";
+import moviesRouter from "./routes/movie.route.js";
+import showsRouter from "./routes/tv.route.js";
+import searchRouter from "./routes/search.route.js";
 
-import { ENV_VARS } from "./config/envVars.js";
-import { connectDB } from "./config/db.js";
-import { protectRoute } from "./middleware/protectRoute.js";
+import { CONFIG } from "./config/envVars.js";
+import { initializeDatabase } from "./config/db.js";
+import { authorizeRequest } from "./middleware/protectRoute.js";
 
-const app = express();
+// Application setup
+const server = express();
+const APP_PORT = CONFIG.PORT;
+const rootDirectory = resolve();
 
-const PORT = ENV_VARS.PORT;
-const __dirname = path.resolve();
+// Middleware for parsing
+server.use(express.json());
+server.use(cookies());
 
-app.use(express.json()); // will allow us to parse req.body
-app.use(cookieParser());
+// API Endpoints
+server.use("/api/v1/auth", authRouter);
+server.use("/api/v1/movies", authorizeRequest, moviesRouter);
+server.use("/api/v1/shows", authorizeRequest, showsRouter);
+server.use("/api/v1/search", authorizeRequest, searchRouter);
 
-app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/movie", protectRoute, movieRoutes);
-app.use("/api/v1/tv", protectRoute, tvRoutes);
-app.use("/api/v1/search", protectRoute, searchRoutes);
+// Frontend setup in production
+if (CONFIG.NODE_ENV === "production") {
+  server.use(express.static(join(rootDirectory, "/frontend/dist")));
 
-if (ENV_VARS.NODE_ENV === "production") {
-	app.use(express.static(path.join(__dirname, "/frontend/dist")));
-
-	app.get("*", (req, res) => {
-		res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
-	});
+  server.get("*", (_, response) => {
+    response.sendFile(resolve(rootDirectory, "frontend", "dist", "index.html"));
+  });
 }
 
-app.listen(PORT, () => {
-	console.log("Server started at http://localhost:" + PORT);
-	connectDB();
+// Start the server
+server.listen(APP_PORT, async () => {
+  console.log(`Application is running on http://localhost:${APP_PORT}`);
+  await initializeDatabase();
 });
