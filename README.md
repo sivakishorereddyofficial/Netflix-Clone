@@ -1,5 +1,5 @@
 <h1 align="center">MERN Netflix Clone 🎬</h1>
-
+f
 About:
 
 -   ⚛️ Tech Stack: React.js, Node.js, Express.js, MongoDB, Tailwind
