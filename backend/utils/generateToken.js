@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { CONFIG } from "../config/config.js";
 
-export const createTokenAndSetCookie = (accountId, response) => {
+export const generateTokenAndSetCookie = (accountId, response) => {
   // Generate a JWT with the account ID as payload
   const authToken = jwt.sign({ accountId }, CONFIG.TOKEN_SECRET, { expiresIn: "15d" });
 
