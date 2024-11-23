@@ -1,15 +1,17 @@
 import jwt from "jsonwebtoken";
-import { ENV_VARS } from "../config/envVars.js";
+import { CONFIG } from "../config/config.js";
 
-export const generateTokenAndSetCookie = (userId, res) => {
-	const token = jwt.sign({ userId }, ENV_VARS.JWT_SECRET, { expiresIn: "15d" });
+export const createTokenAndSetCookie = (accountId, response) => {
+  // Generate a JWT with the account ID as payload
+  const authToken = jwt.sign({ accountId }, CONFIG.TOKEN_SECRET, { expiresIn: "15d" });
 
-	res.cookie("jwt-netflix", token, {
-		maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days in MS
-		httpOnly: true, // prevent XSS attacks cross-site scripting attacks, make it not be accessed by JS
-		sameSite: "strict", // CSRF attacks cross-site request forgery attacks
-		secure: ENV_VARS.NODE_ENV !== "development",
-	});
+  // Set the cookie with security options
+  response.cookie("auth-token", authToken, {
+    maxAge: 15 * 24 * 60 * 60 * 1000, // 15 days in milliseconds
+    httpOnly: true, // Prevent access via JavaScript to mitigate XSS attacks
+    sameSite: "strict", // Protect against CSRF attacks
+    secure: CONFIG.ENVIRONMENT !== "development", // Ensure secure transmission in production
+  });
 
-	return token;
+  return authToken; // Return the token for further use if needed
 };
