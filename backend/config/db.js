@@ -1,13 +1,12 @@
 import mongoose from "mongoose";
-import { ENV_VARS } from "./envVars.js";
+import { CONFIG } from "./config.js";
 
-
-export const connectDB = async () => {
-	try {
-		const conn = await mongoose.connect(ENV_VARS.MONGO_URI);
-		console.log("MongoDB connected: " + conn.connection.host);
-	} catch (error) {
-		console.error("Error connecting to MONGODB: " + error.message);
-		process.exit(1); // 1 means there was an error, 0 means success
-	}
+export const initializeDatabase = async () => {
+  try {
+    const connection = await mongoose.connect(CONFIG.DATABASE_URL);
+    console.log("Database connected successfully: " + connection.connection.host);
+  } catch (err) {
+    console.error("Failed to connect to the database: " + err.message);
+    process.exit(1); // Exit with failure code
+  }
 };
