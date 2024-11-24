@@ -1,60 +1,60 @@
 import { fetchFromTMDB } from "../services/tmdb.service.js";
 
-export async function getTrendingTv(req, res) {
-	try {
-		const data = await fetchFromTMDB("https://api.themoviedb.org/3/trending/tv/day?language=en-US");
-		const randomMovie = data.results[Math.floor(Math.random() * data.results?.length)];
+export async function fetchTrendingShows(request, response) {
+  try {
+    const apiData = await fetchFromTMDB("https://api.themoviedb.org/3/trending/tv/day?language=en-US");
+    const randomShow = apiData.results[Math.floor(Math.random() * apiData.results?.length)];
 
-		res.json({ success: true, content: randomMovie });
-	} catch (error) {
-		res.status(500).json({ success: false, message: "Internal Server Error" });
-	}
+    response.json({ success: true, content: randomShow });
+  } catch (err) {
+    response.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 }
 
-export async function getTvTrailers(req, res) {
-	const { id } = req.params;
-	try {
-		const data = await fetchFromTMDB(`https://api.themoviedb.org/3/tv/${id}/videos?language=en-US`);
-		res.json({ success: true, trailers: data.results });
-	} catch (error) {
-		if (error.message.includes("404")) {
-			return res.status(404).send(null);
-		}
+export async function fetchShowTrailers(request, response) {
+  const { showId } = request.params;
+  try {
+    const apiData = await fetchFromTMDB(`https://api.themoviedb.org/3/tv/${showId}/videos?language=en-US`);
+    response.json({ success: true, trailers: apiData.results });
+  } catch (err) {
+    if (err.message.includes("404")) {
+      return response.status(404).send(null);
+    }
 
-		res.status(500).json({ success: false, message: "Internal Server Error" });
-	}
+    response.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 }
 
-export async function getTvDetails(req, res) {
-	const { id } = req.params;
-	try {
-		const data = await fetchFromTMDB(`https://api.themoviedb.org/3/tv/${id}?language=en-US`);
-		res.status(200).json({ success: true, content: data });
-	} catch (error) {
-		if (error.message.includes("404")) {
-			return res.status(404).send(null);
-		}
+export async function fetchShowDetails(request, response) {
+  const { showId } = request.params;
+  try {
+    const apiData = await fetchFromTMDB(`https://api.themoviedb.org/3/tv/${showId}?language=en-US`);
+    response.status(200).json({ success: true, content: apiData });
+  } catch (err) {
+    if (err.message.includes("404")) {
+      return response.status(404).send(null);
+    }
 
-		res.status(500).json({ success: false, message: "Internal Server Error" });
-	}
+    response.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 }
 
-export async function getSimilarTvs(req, res) {
-	const { id } = req.params;
-	try {
-		const data = await fetchFromTMDB(`https://api.themoviedb.org/3/tv/${id}/similar?language=en-US&page=1`);
-		res.status(200).json({ success: true, similar: data.results });
-	} catch (error) {
-		res.status(500).json({ success: false, message: "Internal Server Error" });
-	}
+export async function fetchSimilarShows(request, response) {
+  const { showId } = request.params;
+  try {
+    const apiData = await fetchFromTMDB(`https://api.themoviedb.org/3/tv/${showId}/similar?language=en-US&page=1`);
+    response.status(200).json({ success: true, similar: apiData.results });
+  } catch (err) {
+    response.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 }
 
-export async function getTvsByCategory(req, res) {
-	const { category } = req.params;
-	try {
-		const data = await fetchFromTMDB(`https://api.themoviedb.org/3/tv/${category}?language=en-US&page=1`);
-		res.status(200).json({ success: true, content: data.results });
-	} catch (error) {
-		res.status(500).json({ success: false, message: "Internal Server Error" });
-	}
+export async function fetchShowsByCategory(request, response) {
+  const { genre } = request.params;
+  try {
+    const apiData = await fetchFromTMDB(`https://api.themoviedb.org/3/tv/${genre}?language=en-US&page=1`);
+    response.status(200).json({ success: true, content: apiData.results });
+  } catch (err) {
+    response.status(500).json({ success: false, message: "Internal Server Error" });
+  }
 }
