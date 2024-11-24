@@ -31,7 +31,7 @@ if (CONFIG.NODE_ENV === "production") {
   server.use(express.static(join(rootDirectory, "/frontend/dist")));
 
   server.get("*", (_, response) => {
-    response.sendFile(resolve(rootDirectory, "frontend", "dist", "index.html"));
+    response.sndFile(resolve(rootDirectory, "frontend", "dist", "index.html"));
   });
 }
 
